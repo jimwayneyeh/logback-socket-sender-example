@@ -6,9 +6,26 @@
 		<reconnectionDelay>10000</reconnectionDelay>
 		<includeCallerData>true</includeCallerData>
 	</appender>
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- hourly rollover -->
+			<fileNamePattern>logs.%d{yyyy-MM-dd_HH}.gz</fileNamePattern>
+			<!-- keep 3 days' worth of history -->
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<charset>UTF-8</charset>
+			<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%X{hostname} | %d{ISO8601} | %-5level | %logger{36} [%thread] | %msg%n</Pattern>
+		</layout>
+		</encoder>
+	</appender>
 
 	<!-- Set the default logging level to "ALL" level for loggers which are not specified. -->
 	<root level="ALL">
 		<appender-ref ref="SOCKET" />
+		<appender-ref ref="FILE" />
 	</root>
 </configuration>

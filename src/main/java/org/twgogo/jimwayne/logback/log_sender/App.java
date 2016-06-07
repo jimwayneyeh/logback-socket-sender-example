@@ -1,14 +1,25 @@
 package org.twgogo.jimwayne.logback.log_sender;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.SecureRandom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 public class App {
+	private static Logger log = LoggerFactory.getLogger("org.twgogo.jimwayne.logback");
+	private static SecureRandom rand = new SecureRandom();
+	static {
+		try {
+			MDC.put("hostname", InetAddress.getLocalHost().getHostName() + rand.nextInt());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
-		Logger log = LoggerFactory.getLogger("org.twgogo.jimwayne.logback");
-		SecureRandom rand = new SecureRandom();
 		log.info("Start log sender.");
 		
 		long loopCount = 0;
